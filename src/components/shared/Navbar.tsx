@@ -14,6 +14,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { Container } from "@mui/material";
+import Image from "next/image";
+import logo from "@/assests/logo-black.png";
+import Link from "next/link";
 
 interface Props {
   /**
@@ -24,7 +28,24 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ["Home", "About", "Contact"];
+const navItems = [
+  {
+    route: "Home",
+    pathname: "/",
+  },
+  {
+    route: "About",
+    pathname: "/about",
+  },
+  {
+    route: "Services",
+    pathname: "/services",
+  },
+  {
+    route: "Contact",
+    pathname: "/contact",
+  },
+];
 
 export default function Navbar(props: Props) {
   const { window } = props;
@@ -36,17 +57,23 @@ export default function Navbar(props: Props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
-      </Typography>
+      <Image
+        src={logo}
+        width={150}
+        height={150}
+        className="mx-auto"
+        alt="logo"
+      />
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
+        {navItems.map((item, index) => (
+          <Link
+            className="w-full inline-block"
+            key={index}
+            href={item.pathname}
+          >
+            <Button className="text-black ">{item.route}</Button>
+          </Link>
         ))}
       </List>
     </Box>
@@ -58,37 +85,43 @@ export default function Navbar(props: Props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
+      <AppBar component="nav" sx={{ background: "#fff" }}>
+        <Container maxWidth="xl">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" }, color: "#000" }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              flexGrow: 1,
-              display: { xs: "flex", sm: "block" },
-              justifyContent: "flex-end",
-            }}
-          >
-            MUI
-          </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "flex", sm: "block" },
+                justifyContent: "flex-end",
+              }}
+            >
+              <Image src={logo} width={150} height={100} alt="logo" />
+            </Typography>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              {navItems.map((item, index) => (
+                <Link
+                  className="font-bold text-lg"
+                  key={index}
+                  href={item.pathname}
+                >
+                  <Button className="text-black font-bold">{item.route}</Button>
+                </Link>
+              ))}
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
       <nav>
         <Drawer
